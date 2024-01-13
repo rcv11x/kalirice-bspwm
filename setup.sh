@@ -180,17 +180,16 @@ function installEnviroment() {
     cp -v $tmp_folder/config/.p10k.zsh ~/.p10k.zsh
     sudo ln -sfv ~/.zshrc /root/.zshrc
     sudo ln -sfv ~/.p10k.zsh /root/.p10k.zsh
-    sudo cp -r $tmp_folder/scripts/*.sh ~/.config/polybar/forest/scripts/
-    touch ~/.config/polybar/forest/scripts/target
+    cp -r $tmp_folder/scripts/* ~/.config/polybar/forest/scripts/
     sudo touch /root/.config/polybar/forest/scripts/target
     chmod +x ~/.config/polybar/forest/scripts/*
-	chmod +x ~/.config/polybar/launch.sh
-	sudo chmod +x /usr/local/share/zsh/site-functions/_bspc
-	sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
-	sudo mkdir -p /root/.config/polybar/forest/scripts/
-	sudo ln -sfv ~/.config/polybar/forest/scripts/target /root/.config/polybar/forest/scripts/target
+    chmod +x ~/.config/polybar/launch.sh
+    sudo chmod +x /usr/local/share/zsh/site-functions/_bspc
+    sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
+    sudo mkdir -p /root/.config/polybar/forest/scripts/
+    sudo ln -sfv ~/.config/polybar/forest/scripts/target /root/.config/polybar/forest/scripts/target
     msg_ok
-	
+
 }
 
 function install_vm_tools() {
