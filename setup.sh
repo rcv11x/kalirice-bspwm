@@ -5,7 +5,7 @@ trap stop_script INT
 
 function stop_script() {
     clear
-    echo -e "\n${red}[!] Saliendo... \n${resetStyle}"
+    echo -e "\n${red}[!] Has salido del script \n${resetStyle}"
     exit 1
 }
 
@@ -23,10 +23,6 @@ black="\e[0;30m"
 username=$(whoami)
 tmp_folder=/tmp/kalirice
 
-
-# Para los mensajes de Ok: Cyan
-# Para los mensajes de FAIL: Rojos
-# Para resto de mensajes: Morado
 
 function show_banner() {
 
@@ -66,13 +62,10 @@ function installEnviroment() {
     echo -e "\n${purple}[!] Instalando entorno...${resetStyle}\n"
     sleep 2
     echo -e "\n${purple}[!] Actualizando sistema y upgradeando...${resetStyle}\n"
-    #sudo apt update && sudo apt full-upgrade -s -y
+    sudo apt update && sudo apt full-upgrade -y
     sleep 2
     echo -e "\n${purple}Instalando dependencias necesarias...${resetStyle}\n"
     sudo apt install build-essential git cmake cmake-data make neovim neofetch htop kitty lsd bat pamixer rofi ranger scrot flameshot fzf xclip feh scrub wmname firejail cmatrix zsh python3-pip libxcb-xtest0-dev libpcre3-dev libgl1-mesa-dev libxcb-xinerama0-dev imagemagick evince tor torbrowser-launcher -y
-
-    sudo apt install -y kitty rofi feh xclip ranger i3lock-fancy scrot scrub wmname firejail imagemagick cmatrix htop neofetch python3-pip procps tty-clock fzf lsd bat pamixer flameshot
-
     msg_ok
     sleep 2
 
@@ -120,7 +113,6 @@ function installEnviroment() {
     meson --buildtype=release . build
     ninja -C build
     sudo ninja -C build install
-    cd ~
 
     msg_ok
     sleep 2
@@ -203,7 +195,7 @@ function install_vm_tools() {
         1)
             echo -e "${red}[${white}*${red}] ${blue}Instalando VMWare tools...${resetStyle}"
             sleep 2.5
-            sudo apt install -s open-vm-tools open-vm-tools-desktop
+            sudo apt install open-vm-tools open-vm-tools-desktop -y
 
             if [[ $? != 0 && $? != 130 ]]; then
                 echo -e "${red}[!] Ha habido un error y no se ha podido instalar VMware tools.${resetStyle}"
@@ -219,7 +211,7 @@ function install_vm_tools() {
         2)
             echo -e "${red}[${white}*${red}] ${blue}Instalando VBox Guest Addittions...${resetStyle}\n"
             sleep 2.5
-            sudo apt install -s -y --reinstall virtualbox-guest-x11
+            sudo apt install --reinstall virtualbox-guest-x11 -y
 
             if [[ $? != 0 && $? != 130 ]]; then
                 echo -e "\n${red}[!] Ha habido un error y no se ha podido instalar VMware tools.${resetStyle}"
