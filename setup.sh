@@ -66,7 +66,7 @@ function installEnviroment() {
     echo -e "\n${purple}[!] Instalando entorno...${resetStyle}\n"
     sleep 2
     echo -e "\n${purple}[!] Actualizando sistema y upgradeando...${resetStyle}\n"
-    sudo apt update && sudo apt full-upgrade -y
+    #sudo apt update && sudo apt full-upgrade -s -y
     sleep 2
     echo -e "\n${purple}Instalando dependencias necesarias...${resetStyle}\n"
     sudo apt install build-essential git cmake cmake-data make neovim neofetch htop kitty lsd bat pamixer rofi ranger scrot flameshot fzf xclip feh scrub wmname firejail cmatrix zsh python3-pip libxcb-xtest0-dev libpcre3-dev libgl1-mesa-dev libxcb-xinerama0-dev imagemagick evince tor torbrowser-launcher -y
@@ -181,14 +181,13 @@ function installEnviroment() {
     sudo ln -sfv ~/.zshrc /root/.zshrc
     sudo ln -sfv ~/.p10k.zsh /root/.p10k.zsh
     sudo cp -r $tmp_folder/scripts/*.sh ~/.config/polybar/forest/scripts/
+    touch ~/.config/polybar/forest/scripts/target
     sudo touch /root/.config/polybar/forest/scripts/target
-
+    chmod +x ~/.config/polybar/forest/scripts/*
 	chmod +x ~/.config/polybar/launch.sh
-	chmod +x ~/.config/polybar/forest/scripts/*
 	sudo chmod +x /usr/local/share/zsh/site-functions/_bspc
 	sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
 	sudo mkdir -p /root/.config/polybar/forest/scripts/
-    touch ~/.config/polybar/forest/scripts/target
 	sudo ln -sfv ~/.config/polybar/forest/scripts/target /root/.config/polybar/forest/scripts/target
     msg_ok
 	
