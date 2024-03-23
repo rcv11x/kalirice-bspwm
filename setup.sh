@@ -58,7 +58,7 @@ function msg_ok() {
 
 function installEnviroment() {
     mkdir $tmp_folder
-    cp -r config/ fonts/ scripts/ $tmp_folder/
+    cp -r config/ fonts/ scripts/ packages/ $tmp_folder/
     echo -e "\n${purple}[!] Instalando entorno...${resetStyle}\n"
     sleep 2
     echo -e "\n${purple}[!] Actualizando sistema y upgradeando...${resetStyle}\n"
@@ -160,6 +160,12 @@ function installEnviroment() {
     git clone https://github.com/meskarune/i3lock-fancy.git $tmp_folder/repos/i3lock-fancy
     cd $tmp_folder/repos/i3lock-fancy
     sudo make install
+    msg_ok
+
+    # Instalacion de kitty v0.33.1
+    echo -e "\n${purple} Instalando kitty ${resetStyle}\n"
+    sleep 2
+    cp -rv $tmp_folder/packages/kitty /opt/
     msg_ok
 
     # Moviendo toda la configuracion a ~/.config
