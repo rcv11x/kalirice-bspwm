@@ -165,7 +165,7 @@ function installEnviroment() {
     # Instalacion de kitty v0.33.1
     echo -e "\n${purple} Instalando kitty ${resetStyle}\n"
     sleep 2
-    cp -rv $tmp_folder/packages/kitty /opt/
+    sudo cp -rv $tmp_folder/packages/kitty /opt/
     msg_ok
 
     # Moviendo toda la configuracion a ~/.config
