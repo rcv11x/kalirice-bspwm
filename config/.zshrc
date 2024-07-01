@@ -1,34 +1,8 @@
-# Import colorscheme from 'wal' asynchronously
-# &   # Run the process in the background.
-# ( ) # Hide shell job control messages.
-# Not supported in the "fish" shell.
-
-# To add support for TTYs this line can be optionally added.
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+ZSH_THEME="afowler"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -36,14 +10,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 DISABLE_MAGIC_FUNCTIONS="true"
@@ -55,7 +21,7 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
@@ -84,11 +50,23 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo fzf command-not-found)
+plugins=(
+	sudo
+	git
+	fzf
+	command-not-found
+	zsh-syntax-highlighting
+	zsh-autosuggestions
+	you-should-use
+	zsh-history-substring-search
+)
 
 source $ZSH/oh-my-zsh.sh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting
+#source /usr/share/zsh/plugins/zsh-autosuggestions
+
 
 # User configuration
 
@@ -159,12 +137,30 @@ alias la='/usr/bin/lsd -a --group-dirs=first'
 alias l='/usr/bin/lsd --group-dirs=first'
 alias lla='/usr/bin/lsd -lha --group-dirs=first'
 alias ls='/usr/bin/lsd --group-dirs=first'
-alias cat='/usr/bin/batcat'
+alias cat='/usr/bin/bat'
 alias catn='/usr/bin/cat'
-alias catnl='/usr/bin/batcat --paging=never'
+alias catnl='/usr/bin/bat --paging=never'
 alias icat='kitten icat'
 
 # Functions
+
+function dir_icon {
+	if [[ "$PWD" == "$HOME" ]]; then
+		echo "%B%F{black}%f%b"
+	else
+		echo "%B%F{cyan}%f%b"
+	fi
+}
+
+function parse_git_branch {
+	local branch
+	branch=$(git symbolic-ref --short HEAD 2> /dev/null)
+	if [ -n "$branch" ]; then
+		echo " [$branch]"
+	fi
+}
+
+PROMPT='%F{cyan}󰣇 %f %F{magenta}%n%f $(dir_icon) %F{red}%~%f%${vcs_info_msg_0_} %F{yellow}$(parse_git_branch)%f %(?.%B%F{green}.%F{red})%f%b '
 
 function opdf(){
 	if [[ $# -eq 0 ]]; then
@@ -174,17 +170,8 @@ function opdf(){
 	fi
 }
 
-function kali-upgrade() {
-	sudo apt update && sudo apt full-upgrade
-
-}
-
 function mkt(){
 	mkdir {nmap,content,exploits,scripts}
-}
-
-function gowork() {
-	cd ~/work
 }
 
 # Extract nmap information
@@ -233,8 +220,20 @@ function fzf-lovely(){
 	fi
 }
 
-#prueba
 function rmk(){
 	scrub -p dod $1
 	shred -zun 10 -v $1
 }
+
+
+function vpn-on(){
+	sudo wg-quick up /etc/wireguard/Alex.conf
+}
+
+function vpn-off(){
+	sudo wg-quick down /etc/wireguard/Alex.conf
+}
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
